@@ -1,0 +1,9 @@
+body {
+  background-color: skyblue;
+  color: white;
+}
+
+.display{
+  width: fit-content;
+  position: relative;
+}
