@@ -6,6 +6,9 @@ let id = [];
 
 //文字を取得ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 btn.onclick = function(){
+  while(display.firstChild){
+    display.removeChild(display.firstChild);
+  }
   const txValue = txArea.value;
   // display.innerHTML = txValue;
   intoArr(txValue);
@@ -21,7 +24,6 @@ btn.onclick = function(){
 //正規表現で。ごとに配列に格納ーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 function intoArr(str){
   console.log(str);
-  // const regexp = new RegExp('。|\.', 'g');
   const arr = str.split(/。|\./);
   arr.forEach(element => {
     if(element != ''){
