@@ -3,12 +3,25 @@ const btn = document.getElementById('btn');
 const display = document.getElementsByClassName('display')[0];
 let strArr = [];
 let id = [];
+let time;
+
+// var id = ['a','b','c','d']; //指定するidを全て配列で渡す
+var tx = [];
+var txCount = [];
+var txSp = 70; // テキストの表示速度
+var dly = 70; // 次の文章までの待ち時間
+var count = 0;
 
 //文字を取得ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 btn.onclick = function(){
   while(display.firstChild){
     display.removeChild(display.firstChild);
   }
+  strArr = [];
+  id = [];
+  tx = [];
+  txCount = [];
+  count = 0;
   const txValue = txArea.value;
   // display.innerHTML = txValue;
   intoArr(txValue);
@@ -23,14 +36,14 @@ btn.onclick = function(){
 
 //正規表現で。ごとに配列に格納ーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 function intoArr(str){
-  console.log(str);
+  // console.log(str);
   const arr = str.split(/。|\./);
   arr.forEach(element => {
     if(element != ''){
       strArr.push(element);
     }
   });
-  console.log(strArr);
+  // console.log(strArr);
 }
 
 //繰り返し文でcreateElementを回す--------------------------
@@ -44,12 +57,7 @@ function forCreate(){
   }
 }
 
-// var id = ['a','b','c','d']; //指定するidを全て配列で渡す
-var tx = [];
-var txCount = [];
-var txSp = 70; // テキストの表示速度
-var dly = 70; // 次の文章までの待ち時間
-var count = 0;
+
 
 // window.onload = function(){
 //   kamikakushi();
@@ -75,12 +83,37 @@ function kamikakushi(){ // 要素を取得して非表示（opacity:0;）にす�
 function itimozi(){ //　一文字ずつ表示
   id[count].innerHTML = tx[count].substr( 0, ++txCount[count] ); // テキストの指定した数の間の要素を表示
   if(tx[count].length != txCount[count]){ // Count が初期の文字列の文字数と同じになるまでループ
-    setTimeout("itimozi()",txSp); // 次の文字へ進む
+    time = setTimeout("itimozi()",txSp); // 次の文字へ進む
   }else{
   id[count].innerHTML = tx[count].substr( 0, ++txCount[count] ); // テキストの指定した数の間の要素を表示
     count++; // 次の段落に進む為のカウントアップ
     if(count != id.length){ // id数が最後なら終了
-    setTimeout("itimozi()",dly); // 次の段落へ進む
+    time = setTimeout("itimozi()",dly); // 次の段落へ進む
     }
   }
 }
+
+
+// btn----------------------------------------------------------
+let stpBtn = document.createElement('input');
+stpBtn.type = 'button';
+stpBtn.value = 'ストップ';
+let btnArea = document.getElementsByClassName('btnArea')[0];
+btnArea.appendChild(stpBtn);
+
+let stpFlag = false;
+
+stpBtn.addEventListener('click', () => {
+  console.log(time);
+  if (stpFlag) {
+    //スタートする処理
+    setTimeout("itimozi()", 0);
+    stpFlag = false;
+    stpBtn.value = 'ストップ';
+    console.log(time);
+  } else {
+    clearTimeout(time);
+    stpFlag = true; 
+    stpBtn.value = '再生';
+  }
+})
